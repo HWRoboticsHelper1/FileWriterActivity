@@ -46,11 +46,16 @@ public class MyFileWriter {
             e.printStackTrace();
         }
 
-        WriteSecretFile("secop fail :(");
-        WriteInSecretFolder("We've been found!");
+        writeSecretFile("secop fail :(");
+        printFileSize(".mysecret.txt");
+        writeSecretFile("yo");
+        printFileSize(".mysecret.txt");
+        writeSecretFile("The quick brown fox jumps over the lazy dog.");
+        printFileSize(".mysecret.txt");
+        writeInSecretFolder("We've been found!");
     }
 
-    public static void WriteSecretFile(String content) {
+    public static void writeSecretFile(String content) {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(".mysecret.txt"))) {
             bufferedWriter.write(content);
         } catch (IOException e) {
@@ -58,7 +63,7 @@ public class MyFileWriter {
         }
     }
 
-    public static void WriteInSecretFolder(String content) {
+    public static void writeInSecretFolder(String content) {
         File directory = new File(".undercoverfolder");
         if (!directory.exists()) {
             directory.mkdirs();
@@ -69,6 +74,16 @@ public class MyFileWriter {
             bufferedWriter.write(content);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void printFileSize(String fileName) {
+        File f = new File(fileName);
+        if (f.exists() && f.isFile()) {
+            long fileSize = f.length();
+            System.out.println("File size: " + fileSize + " bytes");
+        } else {
+            System.out.println("File does not exist");
         }
     }
 }
