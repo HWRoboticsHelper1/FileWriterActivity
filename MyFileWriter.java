@@ -55,6 +55,7 @@ public class MyFileWriter {
         writeInSecretFolder("We've been found!");
     }
 
+    // Writes a message to hidden file named ".mysecret.txt"
     public static void writeSecretFile(String content) {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(".mysecret.txt"))) {
             bufferedWriter.write(content);
@@ -63,6 +64,7 @@ public class MyFileWriter {
         }
     }
 
+    // Writes a message to non hidden file named "coolstuff.txt" in the hidden folder ".undercoverfolder"
     public static void writeInSecretFolder(String content) {
         File directory = new File(".undercoverfolder");
         if (!directory.exists()) {
@@ -77,6 +79,7 @@ public class MyFileWriter {
         }
     }
 
+    // Prints out the size of the given file path in bytes
     private static void printFileSize(String fileName) {
         File f = new File(fileName);
         if (f.exists() && f.isFile()) {
@@ -85,5 +88,10 @@ public class MyFileWriter {
         } else {
             System.out.println("File does not exist");
         }
+    }
+
+    // A to string method... for some reason
+    public String toString() {
+        return "I'm a file writer, bum bum ba dum bum bum";
     }
 }
