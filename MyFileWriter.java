@@ -1,8 +1,19 @@
 import java.io.*;
-import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 
 public class MyFileWriter {
+    private static void printFileSize(String... fileNames) {
+        long totalSize = 0;
+        for (String fileName : fileNames) {
+            File file = new File(fileName);
+            if (file.exists()) {
+                totalSize += file.length();
+            }
+        }
+        System.out.println("Total size of all files: " + totalSize + " bytes");
+    }
+
     public static void main(String[] args) {
         String data = "Hello, World!";
         String fileName1 = "example.txt";
@@ -53,6 +64,8 @@ public class MyFileWriter {
         writeSecretFile("The quick brown fox jumps over the lazy dog.");
         printFileSize(".mysecret.txt");
         writeInSecretFolder("We've been found!");
+
+        printFileSize(".undercoverfolder/coolstuff.txt");
     }
 
     // Writes a message to hidden file named ".mysecret.txt"
