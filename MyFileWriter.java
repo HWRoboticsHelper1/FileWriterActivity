@@ -56,10 +56,20 @@ public class MyFileWriter {
         writeSecretFile("The quick brown fox jumps over the lazy dog.");
         printFileSize(".mysecret.txt");
         writeInSecretFolder("We've been found!");
-        System.out.println(hashFile(".undercoverfolder/coolstuff.txt"));
+        try {
+            System.out.println(hashFile(".undercoverfolder/coolstuff.txt"));
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+
+        testHashFile();
+        testHashFileEmptyFiles();
+        testHashFileLargeFiles();
+        testHashFileSpecialChars();
+        testHashNonExistant();
     }
 
-    public static String hashFile(String filePath) {
+    public static String hashFile(String filePath) throws FileNotFoundException {
         File f = new File(filePath);
         String contents = "";
         String line = "";
@@ -71,6 +81,7 @@ public class MyFileWriter {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            throw new FileNotFoundException("File doesn't exist");
         }
 
         byte[] hashVal = new byte[0];
@@ -150,4 +161,72 @@ public class MyFileWriter {
     public String toString() {
         return "I'm a file writer, bum bum ba dum bum bum";
     }
+
+    public static void testHashFile() {
+        // Contains the message "Your fate is chosen..."
+        String testFilePath = "PredeterminedTest.txt";
+        String hashVal;
+        try {
+            hashVal = hashFile(testFilePath);
+        } catch (Exception e) {
+            return;
+        }
+        String expectedValue = "8d2aa27b229f4623d0b1509be943ac9da9b552d7e376624f8c32a7949915f8ec";
+        assert hashVal.equals(expectedValue) : "Hash was not performed correctly";
+        System.out.println("Hash was successful");
+    }
+
+    public static void testHashFileEmptyFiles() {
+        // An empty file
+        String testFilePath = "EmptyFile.txt";
+        String hashVal;
+        try {
+            hashVal = hashFile(testFilePath);
+        } catch (Exception e) {
+            return;
+        }
+        String expectedValue = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+        assert hashVal.equals(expectedValue) : "Hash did not handle empty case correctly";
+        System.out.println("Empty file handled successfully");
+    }
+
+    public static void testHashFileLargeFiles() {
+        // Definitely not just the great gatsby text file with the newlines replace by spaces
+        String testFilePath = "LargeFile.txt";
+        String hashVal;
+        try {
+            hashVal = hashFile(testFilePath);
+        } catch (Exception e) {
+            return;
+        }
+        String expectedValue = "341776eb9826df4fbf232baff22e22c18d4ebe49eccccc2ebbfa2cebe524bf6b";
+        assert hashVal.equals(expectedValue) : "Hash did not handle empty case correctly";
+        System.out.println("Large file handled successfully");
+    }
+
+    public static void testHashFileSpecialChars() {
+        // Just 3 duck emojis
+        String testFilePath = "SpecialCharsFile.txt";
+        String hashVal;
+        try {
+            hashVal = hashFile(testFilePath);
+        } catch (Exception e) {
+            return;
+        }
+        String expectedValue = "20f498fed5aa49ada2aeae4a91c8acc06b8aabf3f1fd2bbf543a1e0ded065208";
+        assert hashVal.equals(expectedValue) : "Hash did not handle special character correctly";
+        System.out.println("Special characters handled successfully");
+    }
+
+    public static void testHashNonExistant() {
+        String testFilePath = "NonexistantFile.txt";
+        try {
+            String hashVal = hashFile(testFilePath);
+            System.out.println("Error not thrown properly, got the hash: " + hashVal);
+        } catch (Exception e) {
+            System.out.println("Error thrown properly");
+        }
+    }
+
+
 }
